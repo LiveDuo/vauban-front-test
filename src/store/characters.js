@@ -10,21 +10,13 @@ const storeCharacters = new Vuex.Store({
   state: {
     favourites: [],
     characters: characters,
-    filteredCharacters: characters,
     showOnlyFavourites: false,
-    searchTerm: ''
+    searchTerm: '',
+    showModal: false,
+    selectedCharacter: null
   },
-  mutations: {
-    addToFavourites (state, character) {
-      if (!state.favourites.includes(character)) {
-        state.favourites.push(character)
-      }
-    },
-    removeToFavourites (state, character) {
-      const newFavourites = state.favourites.filter(cCharacter => cCharacter !== character)
-      state.favourites = newFavourites
-    },
-    updateFilteredCharacters (state) {
+  getters: {
+    filteredCharacters: state => {
       const characters = state.showOnlyFavourites ? state.favourites : state.characters
       
       const filtered = characters.filter(character => {
@@ -32,13 +24,49 @@ const storeCharacters = new Vuex.Store({
         const term = state.searchTerm.toLowerCase()
         return name.includes(term)
       })
-      state.filteredCharacters = filtered
+      return filtered
+    }
+  },
+  mutations: {
+    updateFavourites (state, favourites) {
+      state.favourites = favourites
     },
     updateShowOnlyFavourite (state, showOnlyFavourites) {
       state.showOnlyFavourites = showOnlyFavourites
     },
     updateSearchTerm (state, searchTerm) {
       state.searchTerm = searchTerm
+    },
+    updateShowModal (state, showModal) {
+      state.showModal = showModal
+    },
+    updateSelectedCharacter (state, character) {
+      state.selectedCharacter = character
+    }
+  },
+  actions: {
+    addToFavourites (context, character) {
+      const newFavourites = context.state.favourites
+      if (!newFavourites.includes(character)) {
+        newFavourites.push(character)
+        context.commit('updateFavourites', newFavourites)
+      }
+    },
+    removeToFavourites (context, character) {
+      const newFavourites = context.state.favourites.filter(cCharacter => cCharacter !== character)
+      context.commit('updateFavourites', newFavourites)
+    },
+    updateShowOnlyFavourite (context, showOnlyFavourites) {
+      context.commit('updateShowOnlyFavourite', showOnlyFavourites)
+    },
+    updateSearchTerm (context, searchTerm) {
+      context.commit('updateSearchTerm', searchTerm)
+    },
+    updateShowModal (context, showModal) {
+      context.commit('updateShowModal', showModal)
+    },
+    updateSelectedCharacter (context, character) {
+      context.commit('updateSelectedCharacter', character)
     }
   }
 })
