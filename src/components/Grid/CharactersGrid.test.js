@@ -34,8 +34,6 @@ describe('components/Grid/CharactersGrid.vue', () => {
     store.dispatch('addToFavourites', characters[5])
 
     store.dispatch('updateShowOnlyFavourite', true)
-
-    store.dispatch('updateFilteredCharacters')
     
     const wrapper = shallowMount(CharactersGrid, {
       store: store,
@@ -48,7 +46,6 @@ describe('components/Grid/CharactersGrid.vue', () => {
   it('shows only characters containing search term', () => {
     const store = storeCharacters
     store.dispatch('updateSearchTerm', 'luke')
-    store.dispatch('updateFilteredCharacters')
 
     const wrapper = shallowMount(CharactersGrid, {
       store: store,

@@ -11,17 +11,14 @@ describe('store/characters.vue', () => {
 
     store.dispatch('updateShowOnlyFavourite', true)
 
-    store.dispatch('updateFilteredCharacters')
-
-    expect(store.state.filteredCharacters.length).toBe(2)
+    expect(store.getters.filteredCharacters.length).toBe(2)
   })
 
   it('has only characters with the search term', () => {
     const store = storeCharacters
     store.dispatch('updateSearchTerm', 'luke')
-    store.dispatch('updateFilteredCharacters')
 
-    expect(store.state.filteredCharacters.length).toBe(0)
+    expect(store.getters.filteredCharacters.length).toBe(0)
   })
 
 })
