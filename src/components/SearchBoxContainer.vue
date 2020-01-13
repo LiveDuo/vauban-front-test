@@ -3,17 +3,17 @@
     <div class="search-box-container-inside">
       <input class="search-box" placeholder="Enter character name" v-model="searchTerm"/>
       
-      <span style="margin-left: 4px;">
+      <span class="panel-item">
         <input type="checkbox" v-model="showOnlyFavourites">
         &nbsp;
         <label>Only favourites</label>
       </span>
 
-      <span v-if="$store.state.favourites.length > 0" style="margin-left: 4px;">
-        <font-awesome-icon :icon="['fas', 'heart']"/>&nbsp;<span>{{$store.state.favourites.length}} favourites</span>
+      <span v-if="$store.state.favourites.length > 0" class="panel-item">
+        <font-awesome-icon :icon="['fas', 'heart']"/>&nbsp;<span data-testid="txt-favourites-count">{{$store.state.favourites.length}} favourites</span>
       </span>
-      <span v-else style="margin-left: 4px;">
-        No favourites
+      <span v-else class="panel-item">
+        <span data-testid="txt-favourites-count">No favourites</span>
       </span>
     </div>
   </div>
@@ -25,7 +25,7 @@ import { debounce } from 'lodash'
 export default {
   methods: {
     updateFilteredCharacters: debounce(function() {
-        this.$store.commit('updateFilteredCharacters', this.searchTerm)
+        this.$store.commit('updateFilteredCharacters')
     }, 250)
   },
   watch: {
@@ -74,5 +74,10 @@ export default {
   display: flex;
   margin: 0 40px;
   margin-bottom: 20px;
+}
+
+.panel-item {
+  margin-left: 4px;
+  width: 100px;
 }
 </style>
