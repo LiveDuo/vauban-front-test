@@ -25,16 +25,8 @@ import { debounce } from 'lodash'
 export default {
   methods: {
     updateFilteredCharacters: debounce(function() {
-        this.$store.commit('updateFilteredCharacters')
+        this.$store.dispatch('updateFilteredCharacters')
     }, 250)
-  },
-  watch: {
-    searchTerm () {
-      this.updateFilteredCharacters()
-    },
-    showOnlyFavourites () {
-      this.updateFilteredCharacters()
-    }
   },
   computed: {
     showOnlyFavourites: {
@@ -42,7 +34,7 @@ export default {
         return this.$store.state.showOnlyFavourites
       },
       set (value) {
-        this.$store.commit('updateShowOnlyFavourite', value)
+        this.$store.dispatch('updateShowOnlyFavourite', value)
       }
     },
     searchTerm: {
@@ -50,7 +42,7 @@ export default {
         return this.$store.state.searchTerm
       },
       set (value) {
-        this.$store.commit('updateSearchTerm', value)
+        this.$store.dispatch('updateSearchTerm', value)
       }
     }
   }

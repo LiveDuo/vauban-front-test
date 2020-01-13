@@ -1,14 +1,14 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import CharactersGrid from './CharactersGrid'
 
-import { storeCharacters } from '../store/characters'
+import { storeCharacters } from '../../store/characters'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons'
 import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-import { characters } from '../data/characters'
+import { characters } from '../../data/characters'
 
 const localVue = createLocalVue()
 
@@ -16,7 +16,7 @@ library.add(fasHeart, farHeart)
 
 localVue.component('font-awesome-icon', FontAwesomeIcon)
 
-describe('components/CharactersGrid.vue', () => {
+describe('components/Grid/CharactersGrid.vue', () => {
   
   it('mounts and has 10 characters that are loaded from store', () => {
     const wrapper = shallowMount(CharactersGrid, {
@@ -29,13 +29,13 @@ describe('components/CharactersGrid.vue', () => {
 
   it('has only favourites when only favourites option is checked', () => {
     const store = storeCharacters
-    store.commit('addToFavourites', characters[0])
-    store.commit('addToFavourites', characters[2])
-    store.commit('addToFavourites', characters[5])
+    store.dispatch('addToFavourites', characters[0])
+    store.dispatch('addToFavourites', characters[2])
+    store.dispatch('addToFavourites', characters[5])
 
-    store.commit('updateShowOnlyFavourite', true)
+    store.dispatch('updateShowOnlyFavourite', true)
 
-    store.commit('updateFilteredCharacters')
+    store.dispatch('updateFilteredCharacters')
     
     const wrapper = shallowMount(CharactersGrid, {
       store: store,
@@ -47,8 +47,8 @@ describe('components/CharactersGrid.vue', () => {
 
   it('shows only characters containing search term', () => {
     const store = storeCharacters
-    store.commit('updateSearchTerm', 'luke')
-    store.commit('updateFilteredCharacters')
+    store.dispatch('updateSearchTerm', 'luke')
+    store.dispatch('updateFilteredCharacters')
 
     const wrapper = shallowMount(CharactersGrid, {
       store: store,

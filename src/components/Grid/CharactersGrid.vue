@@ -1,12 +1,12 @@
 <template>
-  <div v-if="$store.state.filteredCharacters.length === 0" class="characters-grid">
+  <div v-if="$store.getters.filteredCharacters.length === 0" class="characters-grid">
     <div class="no-characters">No characters</div>
   </div>
-  <div v-else-if="!$store.state.filteredCharacters" class="characters-grid">
+  <div v-else-if="!$store.getters.filteredCharacters" class="characters-grid">
     <div className="loading">Loading</div>
   </div>
   <div v-else class="characters-grid">
-    <character v-for="(character, id) in $store.state.filteredCharacters" :key="id" :character="character" />
+    <character v-for="(character, id) in $store.getters.filteredCharacters" :key="id" :character="character" />
   </div>
 </template>
 
@@ -32,7 +32,7 @@ export default {
 @media only screen and (min-width: 481px) {
   .characters-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 228px);
+    grid-template-columns: repeat(auto-fill, 248px);
     justify-content: center;
     max-width: 1000px;
     margin: 0 auto;
