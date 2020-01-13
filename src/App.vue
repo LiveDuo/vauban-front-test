@@ -28,9 +28,6 @@
       <div class="character" v-for="(character, id) in filteredCharacters" :key="id">
         <img alt="Vue logo" src="./assets/logo.png">
         <div>{{character.name}}</div>
-        <!-- <button >Fav</button> -->
-        <!-- <button >UnFav</button> -->
-        <!-- <font-awesome-icon icon="heart" /> -->
         <a role="button" v-if="$store.state.favourites.includes(character)" @click="() => removeToFavourites(character)">
           <font-awesome-icon :icon="['fas', 'heart']"/>
         </a>
@@ -44,9 +41,9 @@
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
-
 import { characters } from './data/characters'
+
+import { debounce } from 'lodash'
 
 export default {
   name: 'app',
@@ -54,7 +51,8 @@ export default {
     return {
       characters: characters,
       searchTerm: '',
-      showOnlyFavourites: false
+      showOnlyFavourites: false,
+      filteredCharacters: characters
     }
   },
   components: {
@@ -69,19 +67,21 @@ export default {
     },
     printFavourites () {
       console.log(this.$store.state.favourites)
-    }
+    },
+    updateFilteredCharacters: debounce(function() {
+        const characters = this.showOnlyFavourites ? this.$store.state.favourites : this.characters
+
+        const filtered = characters.filter(character => {
+          const name = character.name.toLowerCase()
+          const term = this.searchTerm.toLowerCase()
+          return name.includes(term)
+        })
+        this.filteredCharacters = filtered
+    }, 250)
   },
-  computed: {
-    filteredCharacters () {
-
-      const characters = this.showOnlyFavourites ? this.$store.state.favourites : this.characters
-
-      const filtered = characters.filter(character => {
-        const name = character.name.toLowerCase()
-        const term = this.searchTerm.toLowerCase()
-        return name.includes(term)
-      })
-      return filtered
+  watch: {
+    searchTerm () {
+      this.updateFilteredCharacters()
     }
   }
 }
